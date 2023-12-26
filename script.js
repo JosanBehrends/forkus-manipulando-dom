@@ -5,6 +5,27 @@ const longoBt = document.querySelector('.app__card-button--longo');
 const banner = document.querySelector('.app__image');
 const titulo = document.querySelector('.app__title');
 const botoes = document.querySelectorAll('.app__card-button');
+const startPauseBt = document.querySelector('#start-pause');
+const iniciarOuPausarBt = document.querySelector('#start-pause span');
+const imagemBotao = document.querySelector('.app__card-primary-butto-icon');
+
+let tempoDecorridoEmSegundos = 5;
+let intervaloId = null;
+
+const musicaFocoInput = document.querySelector('#alternar-musica');
+const musica = new Audio('/sons/luna-rise-part-one.mp3');
+const pause = new Audio('/sons/pause.mp3');
+const play = new Audio('/sons/play.wav');
+const fim = new Audio('/sons/beep.mp3');
+musica.loop = true;
+
+musicaFocoInput.addEventListener('change', () => {
+    if(musica.paused) {
+        musica.play();
+    } else {
+        musica.pause();
+    }
+})
 
 focoBt.addEventListener('click', () => {
     alterarContexto('foco');
@@ -23,26 +44,58 @@ longoBt.addEventListener('click', () => {
 
 function alterarContexto(contexto) {
     botoes.forEach(function (contexto) {
-        contexto.classList.remove('active')
+        contexto.classList.remove('active');
     })
     html.setAttribute('data-contexto', contexto);
     banner.setAttribute('src', `/imagens/${contexto}.png`);
     switch (contexto) {
         case "foco":
             titulo.innerHTML = `Otimize sua produtividade,<br>
-            <strong class="app__title-strong">mergulhe no que importa.</strong>`
+            <strong class="app__title-strong">mergulhe no que importa.</strong>`;
             break;
 
         case "descanso-curto":
             titulo.innerHTML = `Que tal dar uma respirada?<br>
-            <strong class="app__title-strong">Faça uma pausa curta.</strong>`
+            <strong class="app__title-strong">Faça uma pausa curta.</strong>`;
             break;
 
         case "descanso-longo":
             titulo.innerHTML = `Hora de voltar a superfície<br>
-            <strong class="app__title-strong">Faça uma pausa longa.</strong>`
+            <strong class="app__title-strong">Faça uma pausa longa.</strong>`;
             break;
         default:
             break;
     }
+}
+
+const contagemRegressiva = () => {
+    if (tempoDecorridoEmSegundos <= 0) {
+        fim.play()
+        alert('Tempo finalizado');
+        zerar();
+        return;
+    }
+    tempoDecorridoEmSegundos -= 1
+}
+
+startPauseBt.addEventListener('click', iniciarOuPausar)
+
+function iniciarOuPausar() {
+    if (intervaloId) {
+        pause.play();
+        zerar();
+        return
+    } else {
+        play.play()
+        intervaloId = setInterval(contagemRegressiva, 1000);
+        iniciarOuPausarBt.textContent = "Pausar";
+        imagemBotao.setAttribute('src', '/imagens/pause.png');
+    }
+}
+
+function zerar() {
+    clearInterval(intervaloId);
+    iniciarOuPausarBt.textContent= "Começar";
+    imagemBotao.setAttribute('src', '/imagens/play_arrow.png');
+    intervaloId = null;
 }
