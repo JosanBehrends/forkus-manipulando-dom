@@ -10,7 +10,7 @@ Recursos utilizados durante o curso nesse projeto:
 * diferenciação entre innerHTML e textContent
 
 
-Spoiler do projeto: <br>
+Spoiler do projeto: https://forkus-manipulando-dom.vercel.app/ <br>
 
 Em atividade! <br>
 ![image](https://github.com/JosanBehrends/forkus-manipulando-dom/assets/123435999/ebee3430-075f-406e-80a2-35a451ff4e86)
